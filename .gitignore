@@ -1,0 +1,42 @@
+# Maven and test related noise
+target/
+derby.log
+logs/
+tmp/
+
+# IntelliJ IDEA noise
+out/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse IDE noise
+.settings/
+.project
+.classpath
+
+# NetBeans noise
+nbproject/
+
+# Other Editor's noise
+*~
+*.swp
+
+# MacOSX noise
+.DS_Store
+
+# quartz misc repo
+management-quartz-impl/
+management-quartz/
+quartz-commonj/
+quartz-jboss/
+quartz-jobs/
+quartz-oracle/
+quartz-plugins/
+quartz-stubs/
+quartz-weblogic/
+#quartz/
+system-tests/
+terracotta/
+distribution/

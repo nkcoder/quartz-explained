@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<!DOCTYPE mbeans-descriptors PUBLIC "-//Apache Software Foundation//DTD Model MBeans Configuration File"
+   "http://jakarta.apache.org/commons/dtds/mbeans-descriptors.dtd">
+<mbeans-descriptors>
+	<mbean name="QuartzScheduler" description="A Quartz Scheduler." domain="quartz" type="org.quartz.core.QuartzScheduler">
+	
+		<!-- ATTRIBUTES -->
+		<attribute name="schedulerName" description="The name of the scheduler." type="java.lang.String" writeable="false"/>
+		<attribute name="schedulerInstanceId" description="The instance Id of the scheduler." type="java.lang.String" writeable="false"/>
+		<attribute name="schedulerContext" description="The SchedulerContext of the scheduler." type="org.quartz.SchedulerContext" writeable="false"/>
+		<attribute name="inStandbyMode" description="Whether the scheduler is currently in standby (paused)." type="boolean" writeable="false" is="true"/>
+		<attribute name="shutdown" description="Whether the scheduler has been shutdown." type="boolean" writeable="false" is="true"/>
+		<attribute name="jobFactory" description="The JobFactory that will be responsible for producing instances of Job classes." type="org.quartz.spi.JobFactory" readable="false" writeable="true"/>
+		<attribute name="version" description="Quartz version." type="java.lang.String" writeable="false"/>
+		<attribute name="jobStoreClass" description="Class of this scheduler's JobStore." type="java.lang.Class" writeable="false"/>
+		<attribute name="threadPoolClass" description="Class of this scheduler's ThreadPool." type="java.lang.Class" writeable="false"/>
+		<attribute name="threadPoolSize" description="Number of threads in this scheduler's ThreadPool." type="int" writeable="false"/>
+		
+		<!-- OPERATIONS-->
+		<operation name="start" description="Starts the scheduler's threads that fire Triggers." impact="ACTION" returnType="void"/>
+		<operation name="standby" description="Temporarily halts the scheduler's firing of Triggers." impact="ACTION" returnType="void"/>
+		<operation name="shutdown" description="Halts the scheduler's firing of Triggers, and cleans up all resources associated with the scheduler." impact="ACTION" returnType="void"/>
+		<operation name="shutdown" description="Halts the scheduler's firing of Triggers, and cleans up all resources associated with the scheduler." impact="ACTION" returnType="void">
+			<parameter name="waitForJobsToComplete" description="If true the scheduler will not allow this method to return until all currently executing jobs have completed." type="boolean"/>
+		</operation>
+
+		<operation name="runningSince" description="Get Date scheduler was first started." impact="INFO" returnType="java.util.Date"/>
+		<operation name="numJobsExecuted" description="Get total number of jobs executed by this scheduler." impact="INFO" returnType="int"/>
+		<operation name="supportsPersistence" description="Get whether this scheduler's JobStore supports persistence." impact="INFO" returnType="boolean"/>
+		<operation name="getCurrentlyExecutingJobs" description="Get a list of JobExecutionContext objects that represent all currently executing Jobs in this scheduler instance." impact="INFO" returnType="java.util.List"/>
+
+		<operation name="scheduleJob" description="Add the given JobDetail to the Scheduler, and associate the given Trigger with it." impact="ACTION" returnType="java.util.Date">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobDetail" type="org.quartz.JobDetail" description="The JobDetail to schedule."/>
+			<parameter name="trigger" type="org.quartz.Trigger" description="The Trigger to schedule."/>
+		</operation>
+		<operation name="scheduleJob" description="Schedule the given Trigger with the Job identified by the Trigger's settings." impact="ACTION" returnType="java.util.Date">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="trigger" type="org.quartz.Trigger" description="The Trigger to schedule."/>
+		</operation>
+		<operation name="unscheduleJob" description="Remove the indicated Triggerfrom the scheduler." impact="ACTION" returnType="boolean">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the Trigger to unschedule."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The group name of the Trigger to unschedule."/>
+		</operation>
+		<operation name="rescheduleJob" description="Remove (delete) the Trigger with the given name, and store the new given one - which must be associated with the same job (the new trigger must have the job name and group specified) - however, the new trigger need not have the same name as the old trigger." impact="ACTION" returnType="java.util.Date">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the Trigger to be replaced."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The group name of the Trigger to be replaced."/>
+			<parameter name="newTrigger" type="org.quartz.Trigger" description="The new Trigger to be stored."/>
+		</operation>
+
+		<operation name="addJob" description="Add the given Job to the Scheduler - with no associated Trigger." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobDetail" type="org.quartz.JobDetail" description="The JobDetail to add."/>
+			<parameter name="replace" type="boolean" description="Whether or not to replace an existing Job with the given one."/>
+		</operation>
+		<operation name="deleteJob" description="Delete the identified Job from the Scheduler - and any associated Triggers." impact="ACTION" returnType="boolean">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the Job to delete."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Job to delete."/>
+		</operation>
+
+		<operation name="triggerJob" description="Trigger the identified JobDetail (execute it now) - the generated trigger will be non-volatile." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the Job to trigger."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Job to trigger."/>
+			<parameter name="jobDataMap" type="org.quartz.JobDataMap" description="The (possibly null) JobDataMap to be associated with the trigger that fires the job immediately."/>
+		</operation>
+		<operation name="triggerJobWithVolatileTrigger" description="Trigger the identified JobDetail (execute it now) - the generated trigger will be volatile." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the Job to trigger."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Job to trigger."/>
+			<parameter name="jobDataMap" type="org.quartz.JobDataMap" description="The (possibly null) JobDataMap to be associated with the trigger that fires the job immediately."/>
+		</operation>
+		
+		
+		<operation name="interrupt" description="Request the interruption, within this scheduler instance, of all currently executing instances of the identified Job, which  must be an implementor of the InterruptableJob interface." impact="ACTION" returnType="boolean">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the trigger to interrupt."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The name of the trigger group to interrupt."/>
+		</operation>
+
+		<operation name="pauseJob" description="Pause the JobDetail with the given name - by pausing all of its current Triggers." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the Job to pause."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Job to pause."/>
+		</operation>
+		<operation name="pauseJobGroup" description="Pause all of the JobDetails in the given group - by pausing all of theirTriggers." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Jobs to pause."/>
+		</operation>
+		<operation name="pauseTrigger" description="Pause the Trigger with the given name." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the Trigger to pause."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The group name of the Trigger to pause."/>
+		</operation>
+		<operation name="pauseTriggerGroup" description="Pause all of the Triggers in the given group." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The group name of the Triggers to pause."/>
+		</operation>		
+		<operation name="resumeJob" description="Resume (un-pause) the JobDetail with the given name." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the Job to resume."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Job to resume."/>
+		</operation>
+		<operation name="resumeJobGroup" description="Resume (un-pause) all of the JobDetails in the given group." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The group name of the Jobs to resume."/>
+		</operation>
+		<operation name="resumeTrigger" description="Resume (un-pause) the Trigger with the given name." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the Trigger to resume."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The group name of the Trigger to resume."/>
+		</operation>
+		<operation name="resumeTriggerGroup" description="Resume (un-pause) all of the Triggers in the given group." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The group name of the Triggers to resume."/>
+		</operation>
+		<operation name="pauseAll" description="Pause all triggers - similar to calling pauseTriggerGroup(group) on every group, however, after using this method resumeAll() must be called to clear the scheduler's state of 'remembering' that all new triggers will be paused as they are added." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+		</operation>
+		<operation name="resumeAll" description="Resume (un-pause) all triggers - similar to calling resumeTriggerGroup(group) on every group." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+		</operation>
+		<operation name="getPausedTriggerGroups" description="Get the names of all Trigger groups that are paused." impact="INFO" returnType="java.util.Set">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+		</operation>
+
+		<operation name="getJobGroupNames" description="Get the names of all known JobDetail groups." impact="INFO" returnType="[Ljava.lang.String;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+		</operation>
+		<operation name="getJobNames" description="Get the names of all the JobDetails in the given group." impact="INFO" returnType="[Ljava.lang.String;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The job group name."/>
+		</operation>
+		<operation name="getTriggersOfJob" description="Get all Triggers that are associated with the identified JobDetail." impact="INFO" returnType="[Lorg.quartz.Trigger;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the job."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The name of the job group."/>
+		</operation>
+		<operation name="getTriggerGroupNames" description="Get the names of all known Trigger groups." impact="INFO" returnType="[Ljava.lang.String;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+		</operation>
+		<operation name="getTriggerNames" description="Get the names of all the Triggers in the given group." impact="INFO" returnType="[Ljava.lang.String;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The trigger group name."/>
+		</operation>
+		<operation name="getJobDetail" description="Get the JobDetail for the Job instance with the given name and group." impact="INFO" returnType="[Lorg.quartz.JobDetail;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="jobName" type="java.lang.String" description="The name of the job."/>
+			<parameter name="jobGroupName" type="java.lang.String" description="The name of the job group."/>
+		</operation>
+		<operation name="getTrigger" description="Get the Trigger instance with the given name and group." impact="INFO" returnType="[Lorg.quartz.Trigger;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the trigger."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The name of the trigger group."/>
+		</operation>
+		<operation name="getTriggerState" description="Get the current state of the identified Trigger." impact="INFO" returnType="int">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="triggerName" type="java.lang.String" description="The name of the trigger."/>
+			<parameter name="triggerGroupName" type="java.lang.String" description="The name of the trigger group."/>
+		</operation>
+
+		<operation name="addCalendar" description="Add (register) the given Calendar to the scheduler." impact="ACTION" returnType="void">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="calendarName" type="java.lang.String" description="Name of the calendar to add."/>
+			<parameter name="calendar" type="org.quartz.Calendar" description="The Calendar instance to add."/>
+			<parameter name="replace" type="boolean" description="Whether to allow replacing an existing Calendar instance."/>
+			<parameter name="updateTriggers" type="boolean" description="Whether or not to update existing triggers that referenced the already existing calendar so that they are 'correct' based on the new trigger."/>
+		</operation>
+		<operation name="deleteCalendar" description="Delete the identified Calendar from the scheduler." impact="ACTION" returnType="boolean">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="calendarName" type="java.lang.String" description="Name of the Calendar to delete."/>
+		</operation>
+		<operation name="getCalendar" description="Get the Calendar instance with the given name." impact="INFO" returnType="org.quartz.Calendar">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+			<parameter name="calendarName" type="java.lang.String" description="Name of the Calendar to get."/>
+		</operation>
+		<operation name="getCalendarNames" description="Get the names of all registered Calendars." impact="INFO" returnType="[Ljava.lang.String;">
+			<parameter name="schedulingContext" type="org.quartz.core.SchedulingContext" description="The scheduling context."/>
+		</operation>
+
+		<operation name="addGlobalJobListener" description="Add the given JobListener to the scheduler's global list." impact="ACTION" returnType="void">
+			<parameter name="jobListener" type="org.quartz.JobListener" description="Job listener to add."/>
+		</operation>
+		<operation name="addJobListener" description="Add the given JobListener to the scheduler's list, of registered JobListeners." impact="ACTION" returnType="void">
+			<parameter name="jobListener" type="org.quartz.JobListener" description="Job listener to add."/>
+		</operation>
+		<operation name="removeGlobalJobListener" description="Remove the identifed JobListener from the scheduler's list of global listeners." impact="ACTION" returnType="boolean">
+			<parameter name="jobListenerName" type="java.lang.String" description="Name of the global JobListener to remove."/>
+		</operation>
+		<operation name="removeJobListener" description="Remove the identifed JobListener from the scheduler's list of registered listeners." impact="ACTION" returnType="boolean">
+			<parameter name="jobListenerName" type="java.lang.String" description="Name of the JobListener to remove."/>
+		</operation>
+		<operation name="getGlobalJobListeners" description="Get a List containing all of the JobListeners in the scheduler's global list." impact="INFO" returnType="java.util.List"/>
+		<operation name="getJobListenerNames" description="Get a Set containing the names of all the non-global JobListeners registered with the scheduler." impact="INFO" returnType="java.util.Set"/>
+		<operation name="getGlobalJobListener" description="Get the global JobListener that has the given name." impact="INFO" returnType="org.quartz.JobListener">
+			<parameter name="jobListenerName" type="java.lang.String" description="Name of the global JobListener to get."/>
+		</operation>
+		<operation name="getJobListener" description="Get the non-global JobListener that has the given name." impact="INFO" returnType="org.quartz.JobListener">
+			<parameter name="jobListenerName" type="java.lang.String" description="Name of the JobListener to get."/>
+		</operation>
+
+		<operation name="addGlobalTriggerListener" description="Add the given TriggerListener to the scheduler's global list." impact="ACTION" returnType="void">
+			<parameter name="triggerListener" type="org.quartz.TriggerListener" description="Trigger listener to add."/>
+		</operation>
+		<operation name="addTriggerListener" description="Add the given TriggerListener to the scheduler's list, of registered TriggerListeners." impact="ACTION" returnType="void">
+			<parameter name="triggerListener" type="org.quartz.TriggerListener" description="Trigger listener to add."/>
+		</operation>
+		<operation name="removeGlobalTriggerListener" description="Remove the identifed TriggerListener from the scheduler's list of global listeners." impact="ACTION" returnType="boolean">
+			<parameter name="triggerListenerName" type="java.lang.String" description="Name of the global TriggerListener to remove."/>
+		</operation>
+		<operation name="removeTriggerListener" description="Remove the identifed TriggerListener from the scheduler's list of registered listeners." impact="ACTION" returnType="boolean">
+			<parameter name="triggerListenerName" type="java.lang.String" description="Name of the TriggerListener to remove."/>
+		</operation>
+		<operation name="getGlobalTriggerListeners" description="Get a List containing all of the TriggerListeners in the scheduler's global list." impact="INFO" returnType="java.util.List"/>
+		<operation name="getTriggerListenerNames" description="Get a Set containing the names of all the non-global TriggerListeners registered with the scheduler." impact="INFO" returnType="java.util.Set"/>
+		<operation name="getGlobalTriggerListener" description="Get the global TriggerListener that has the given name." impact="INFO" returnType="org.quartz.TriggerListener">
+			<parameter name="triggerListenerName" type="java.lang.String" description="Name of the global TriggerListener to get."/>
+		</operation>
+		<operation name="getTriggerListener" description="Get the non-global TriggerListener that has the given name." impact="INFO" returnType="org.quartz.TriggerListener">
+			<parameter name="triggerListenerName" type="java.lang.String" description="Name of the TriggerListener to get."/>
+		</operation>
+
+		<operation name="addSchedulerListener" description="Register the given SchedulerListener with the scheduler." impact="ACTION" returnType="void">
+			<parameter name="schedulerListener" type="org.quartz.SchedulerListener" description="Scheduler listener to add."/>
+		</operation>
+		<operation name="removeSchedulerListener" description="Remove the given SchedulerListener from the scheduler." impact="ACTION" returnType="boolean">
+			<parameter name="schedulerListener" type="org.quartz.SchedulerListener" description="Scheduler listener to remove."/>
+		</operation>
+		<operation name="getSchedulerListeners" description="Get a List containing all of the SchedulerListeners registered with the scheduler." impact="INFO" returnType="java.util.List"/>
+	</mbean>
+</mbeans-descriptors>
