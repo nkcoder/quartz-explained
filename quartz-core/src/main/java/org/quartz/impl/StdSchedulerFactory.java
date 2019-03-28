@@ -611,7 +611,16 @@ public class StdSchedulerFactory implements SchedulerFactory {
     }
 
     /**
-     * 实例化操作，过程有点复杂
+     * 实例化操作，过程比较复杂：
+     *  - 如果设置了rmi代理，则返回一个RemoteScheduler
+     *  - 如果配置jmx，则返回一个RemoteMBeanScheduler
+     *  - 通过反射获取ThreadPool和JobStore等的class对象
+     *  - 设置DataSources
+     *  - 设置SchedulerPlugins，如果有
+     *  - 添加JobListener，如果有
+     *  - 添加TriggerListener，如果有
+     *  - 创建QuartzScheduler并初始化
+     *  - 将新创建的Scheduler绑定到SchedulerRepository
      *
      * @return
      * @throws SchedulerException

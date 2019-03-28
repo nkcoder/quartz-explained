@@ -23,7 +23,11 @@ import java.io.InputStream;
 /**
  * An interface for classes wishing to provide the service of loading classes
  * and resources within the scheduler...
- * 
+ *
+ * <p>
+ *  scheduler中加载类和资源的接口
+ * </p>
+ *
  * @author jhouse
  * @author pl47ypus
  */

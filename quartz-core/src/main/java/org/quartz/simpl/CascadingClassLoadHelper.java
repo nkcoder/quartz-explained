@@ -38,6 +38,10 @@ import org.quartz.spi.ClassLoadHelper;
  * design.  Thus, this class loader finds the approach that works, then 
  * 'remembers' it.  
  * </p>
+ *
+ * <p>
+ * 使用ClassLoadHelper的所有子类（都是class loader）去尝试加载一个类，并建立一个mapping，以后加载这个类时都优先使用该ClassLoader。
+ * </p>
  * 
  * @see org.quartz.spi.ClassLoadHelper
  * @see org.quartz.simpl.LoadingLoaderClassLoadHelper
@@ -91,6 +95,8 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
 
     /**
      * Return the class with the given name.
+     *
+     * 遍历每一个class loader，去尝试进行类加载，如果加载成功，则设置为候选
      */
     public Class<?> loadClass(String name) throws ClassNotFoundException {
 
