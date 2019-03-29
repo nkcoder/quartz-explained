@@ -86,6 +86,10 @@ import org.slf4j.LoggerFactory;
  *  JobStoreTX jdbcJobStore = new JobStoreTX(); jdbcJobStore.setDataSource("someDatasource"); jdbcJobStore.setPostgresStyleBlobs(true); jdbcJobStore.setTablePrefix("QRTZ_"); jdbcJobStore.setInstanceId("My Instance");
  * </pre>
  *
+ * <p>
+ * SchedulerFactory的单例实现
+ * </p>
+ *
  * @author Mohammad Rezaei
  * @author James House
  *
@@ -152,6 +156,8 @@ public class DirectSchedulerFactory implements SchedulerFactory {
      *
      * Interface.
      *
+     * 单例模式创建实例
+     *
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
 
@@ -162,6 +168,8 @@ public class DirectSchedulerFactory implements SchedulerFactory {
     /**
      * Creates an in memory job store (<code>{@link RAMJobStore}</code>)
      * The thread priority is set to Thread.NORM_PRIORITY
+     *
+     * 使用RAMJobStore和SimpleThreadPool，其它参数默认，创建Scheduler
      *
      * @param maxThreads
      *          The number of threads in the thread pool
@@ -200,6 +208,8 @@ public class DirectSchedulerFactory implements SchedulerFactory {
      * with the addition of specifying the scheduler name and instance ID. This
      * scheduler can only be retrieved via
      * {@link DirectSchedulerFactory#getScheduler(String)}
+     *
+     * 制定rmi的host和port，创建RemoteScheduler
      *
      * @param schedulerName
      *          The name for the scheduler.
@@ -420,6 +430,8 @@ public class DirectSchedulerFactory implements SchedulerFactory {
     /**
      * Creates a scheduler using the specified thread pool, job store, and
      * plugins, and binds it to RMI.
+     *
+     * 创建scheduler的全参方法，与StdSchedulerFactory的初始化步骤差不多
      *
      * @param schedulerName
      *          The name for the scheduler.

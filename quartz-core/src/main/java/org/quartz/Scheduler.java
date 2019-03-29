@@ -94,6 +94,10 @@ import org.quartz.utils.Key;
  * The setup/configuration of a <code>Scheduler</code> instance is very
  * customizable. Please consult the documentation distributed with Quartz.
  * </p>
+ *
+ * <p>
+ * Scheduler接口，持有JobDetail和Trigger的注册信息，并根据trigger出发job的执行
+ * </p>
  * 
  * @see Job
  * @see JobDetail
@@ -228,6 +232,11 @@ public interface Scheduler {
      * <p>
      * The misfire/recovery process will be started, if it is the initial call
      * to this method on this scheduler instance.
+     * </p>
+     *
+     * <p>
+     * scheduler被创建后，处于`stand-by`状态，是不能触发trigger的。
+     * 调用`start`方法，启动scheduler的线程后，才可以触发trigger。
      * </p>
      * 
      * @throws SchedulerException

@@ -29,6 +29,13 @@ import org.quartz.SchedulerException;
  * preventing garbage collection, and allowing 'global' lookups - all within a
  * ClassLoader space.
  * </p>
+ *
+ * <p>
+ * 保存scheduler实例，单例模式，主要作用：
+ *  - 保证唯一性
+ *  - 禁止gc
+ *  - 通过name全局查找
+ * </p>
  * 
  * @author James House
  */
@@ -62,7 +69,9 @@ public class SchedulerRepository {
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      * 
      * Interface.
-     * 
+     *
+     * 单例模式：通过synchronized保证线程安全
+     *
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
 

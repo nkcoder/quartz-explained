@@ -83,6 +83,10 @@ import org.slf4j.LoggerFactory;
  * interface, containing methods to schedule <code>{@link org.quartz.Job}</code>s,
  * register <code>{@link org.quartz.JobListener}</code> instances, etc.
  * </p>
+ *
+ * <p>
+ * 这个类才是quartz的核心，是Scheduler的具体实现。
+ * </p>
  * 
  * @see org.quartz.Scheduler
  * @see org.quartz.core.QuartzSchedulerThread
@@ -522,6 +526,13 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
      * All <code>{@link org.quartz.Trigger}s</code> that have misfired will
      * be passed to the appropriate TriggerListener(s).
      * </p>
+     *
+     * <p>
+     * 启动scheduler：
+     *  - 通知JobStore
+     *  - 启动thread
+     *  - 通知SchedulerListener
+     * </p>
      */
     public void start() throws SchedulerException {
 
@@ -550,6 +561,12 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
         notifySchedulerListenersStarted();
     }
 
+    /**
+     * 延迟启动，启动新线程，sleep指定时间，然后再启动scheduler
+     *
+     * @param seconds   延迟时间
+     * @throws SchedulerException
+     */
     public void startDelayed(final int seconds) throws SchedulerException
     {
         if (shuttingDown || closed) {
