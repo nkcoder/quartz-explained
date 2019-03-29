@@ -1,4 +1,4 @@
-本repo是对quartz核心源码[quartz-core](https://github.com/quartz-scheduler/quartz)进行的一些说明和注解，限于水平，不足之处请指正。
+本repo是对quartz核心源码[quartz-core](https://github.com/quartz-scheduler/quartz)进行的一些说明和注解，限于水平，不足之处请多指教。
 
 ---
 
@@ -12,3 +12,5 @@ quartz教程系列博文之前发表在[并发编程网](http://ifeve.com/quartz
 - [quartz教程四：Trigger](quartz教程四：Trigger)
 - [quartz教程五：SimpleTrigger](quartz教程五：SimpleTrigger)
 - [quartz教程六：CronTrigger](https://nkcoder.github.io/2019/03/28/quartz-tutorial-6/)
+- [quartz教程七：TriggerListeners与JobListeners](https://nkcoder.github.io/2019/03/29/quartz-tutorial-7/)
+- [quartz教程八：SchedulerListener](https://nkcoder.github.io/2019/03/29/quartz-tutorial-8/)
