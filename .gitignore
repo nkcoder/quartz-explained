@@ -26,7 +26,7 @@ nbproject/
 # MacOSX noise
 .DS_Store
 
-# quartz misc repo
+# quartz repo noise
 management-quartz-impl/
 management-quartz/
 quartz-commonj/
@@ -40,3 +40,5 @@ quartz-weblogic/
 system-tests/
 terracotta/
 distribution/
+TestCategories.properties
+azure-pipelines.yml
