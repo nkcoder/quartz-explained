@@ -42,6 +42,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The pool has a fixed number of <code>Thread</code>s, and does not grow or
  * shrink based on demand.
  * </p>
+ *
+ * <p>
+ *    ThreadPool的简单实现，固定线程数，不会伸缩
+ * </p>
  * 
  * @author James House
  * @author Juergen Donnerstag
@@ -233,6 +237,12 @@ public class SimpleThreadPool implements ThreadPool {
         schedulerInstanceName = schedName;
     }
 
+    /**
+     * 初始化，线程池在使用之前必须先初始化.
+     * 主要工作是创建工作线程并启动.
+     *
+     * @throws SchedulerConfigException
+     */
     public void initialize() throws SchedulerConfigException {
 
         if(workers != null && workers.size() > 0) // already initialized...
@@ -271,6 +281,7 @@ public class SimpleThreadPool implements ThreadPool {
         }
 
         // create the worker threads and start them
+        // 创建工作线程并启动
         Iterator<WorkerThread> workerThreads = createWorkerThreads(count).iterator();
         while(workerThreads.hasNext()) {
             WorkerThread wt = workerThreads.next();
@@ -279,6 +290,12 @@ public class SimpleThreadPool implements ThreadPool {
         }
     }
 
+    /**
+     * 创建指定数目的工作线程，放在LinkedList中
+     *
+     * @param createCount 线程数量
+     * @return
+     */
     protected List<WorkerThread> createWorkerThreads(int createCount) {
         workers = new LinkedList<WorkerThread>();
         for (int i = 1; i<= createCount; ++i) {
@@ -321,6 +338,10 @@ public class SimpleThreadPool implements ThreadPool {
      * <p>
      * Jobs currently in progress will complete.
      * </p>
+     *
+     * <p>
+     *     关闭线程池，会等待正在运行的jo执行完成
+     * </p>
      */
     public void shutdown(boolean waitForJobsToComplete) {
 
@@ -333,6 +354,7 @@ public class SimpleThreadPool implements ThreadPool {
                 return;
 
             // signal each worker thread to shut down
+            // 先给所有的工作线程发送终止信号
             Iterator<WorkerThread> workerThreads = workers.iterator();
             while(workerThreads.hasNext()) {
                 WorkerThread wt = workerThreads.next();
@@ -403,6 +425,11 @@ public class SimpleThreadPool implements ThreadPool {
      * shut down, the Runnable is executed immediately within a new additional
      * thread.
      * </p>
+     *
+     * <p>
+     *     在线程池中找一个可用线程执行任务。
+     *     如果线程池正在被关闭，新启一个线程来执行该任务。
+     * </p>
      * 
      * @param runnable
      *          the <code>Runnable</code> to be added.
@@ -417,6 +444,7 @@ public class SimpleThreadPool implements ThreadPool {
             handoffPending = true;
 
             // Wait until a worker thread is available
+            // 等待线程池中的空闲线程
             while ((availWorkers.size() < 1) && !isShutdown) {
                 try {
                     nextRunnableLock.wait(500);
@@ -458,6 +486,12 @@ public class SimpleThreadPool implements ThreadPool {
         }
     }
 
+    /**
+     * 将线程标记为可用
+     * 任务执行完成，将工作线程从busyWorks移动到availWorkers
+     *
+     * @param wt
+     */
     protected void makeAvailable(WorkerThread wt) {
         synchronized(nextRunnableLock) {
             if(!isShutdown) {
@@ -468,6 +502,11 @@ public class SimpleThreadPool implements ThreadPool {
         }
     }
 
+    /**
+     * 将工作线程从busyWorks队列中移除
+     *
+     * @param wt
+     */
     protected void clearFromBusyWorkersList(WorkerThread wt) {
         synchronized(nextRunnableLock) {
             busyWorkers.remove(wt);
@@ -596,6 +635,7 @@ public class SimpleThreadPool implements ThreadPool {
                         setPriority(tp.getThreadPriority());
                     }
 
+                    // 如果不是一次性任务，工作线程需回收
                     if (runOnce) {
                            run.set(false);
                         clearFromBusyWorkersList(this);

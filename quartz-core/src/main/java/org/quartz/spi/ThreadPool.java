@@ -36,6 +36,10 @@ import org.quartz.SchedulerConfigException;
  * are being used, it may result in greater imballance of load.
  * </p>
  *
+ * <p>
+ *     线程池接口，仅限于QuartzScheduler使用
+ * </p>
+ *
  * @see org.quartz.core.QuartzScheduler
  *
  * @author James House
@@ -60,6 +64,11 @@ public interface ThreadPool {
      * The implementation of this interface should not throw exceptions unless
      * there is a serious problem (i.e. a serious misconfiguration). If there
      * are no immediately available threads <code>false</code> should be returned.
+     * </p>
+     *
+     * <p>
+     *     在空闲线程上执行，如果当前没有可用的空闲线程，返回false。
+     *     该实现不应该抛出异常，除非遇到严重问题（如严重的配置错误）
      * </p>
      *
      * @return true, if the runnable was assigned to run on a Thread.
