@@ -44,6 +44,10 @@ import java.util.Date;
  * into the <code>JobDataMap</code> on the <code>Trigger</code>.
  * </p>
  *
+ * Trigger的TriggerKey标识trigger在一个Scheduler中的唯一性。
+ * 多个trigger可以关联同一个job，但一个trigger只能指向一个job。
+ * Trigger可以将自己的JobDataMap中的数据传递给对应的Job。
+ *
  * @see TriggerBuilder
  * @see JobDataMap
  * @see JobExecutionContext

@@ -340,7 +340,7 @@ public class SimpleThreadPool implements ThreadPool {
      * </p>
      *
      * <p>
-     *     关闭线程池，会等待正在运行的jo执行完成
+     *     关闭线程池，会等待正在运行的job执行完成
      * </p>
      */
     public void shutdown(boolean waitForJobsToComplete) {

@@ -51,6 +51,10 @@ import org.quartz.utils.Key;
  *         
  *         scheduler.scheduleJob(job, trigger);
  * <pre>
+ *
+ * <p>
+ *     JobBuilder主要用于创建JobDetail，使用DSL的builder模式.
+ * </p>
  *  
  * @see TriggerBuilder
  * @see DateBuilder 
@@ -93,6 +97,8 @@ public class JobBuilder {
     /**
      * Produce the <code>JobDetail</code> instance defined by this 
      * <code>JobBuilder</code>.
+     *
+     * 创建JobDetail，设置属性
      * 
      * @return the defined JobDetail.
      */

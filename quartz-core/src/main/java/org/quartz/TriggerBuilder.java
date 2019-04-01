@@ -55,6 +55,10 @@ import org.quartz.utils.Key;
  *         
  *         scheduler.scheduleJob(job, trigger);
  * <pre>
+ *
+ * <p>
+ *     以DSL的builder方式创建Trigger.
+ * </p>
  *  
  * @see JobBuilder
  * @see ScheduleBuilder
@@ -90,6 +94,8 @@ public class TriggerBuilder<T extends Trigger> {
     
     /**
      * Produce the <code>Trigger</code>.
+     *
+     * 创建trigger，设置属性
      * 
      * @return a Trigger that meets the specifications of the builder.
      */
@@ -275,6 +281,8 @@ public class TriggerBuilder<T extends Trigger> {
     /**
      * Set the identity of the Job which should be fired by the produced 
      * Trigger.
+     *
+     * 设置trigger对应的job
      * 
      * @param keyOfJobToFire the identity of the Job to fire.
      * @return the updated TriggerBuilder

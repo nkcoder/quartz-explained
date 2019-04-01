@@ -52,6 +52,10 @@ import org.quartz.utils.ClassUtils;
  * are scheduled. Many <code>Trigger</code>s can point to the same <code>Job</code>,
  * but a single <code>Trigger</code> can only point to one <code>Job</code>.
  * </p>
+ *
+ * <p>
+ *     JobDetail中的数据为Job的属性，其中name和group是job在一个scheduler中的唯一标识
+ * </p>
  * 
  * @see Job
  * @see StatefulJob

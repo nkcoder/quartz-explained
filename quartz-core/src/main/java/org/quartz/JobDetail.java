@@ -38,6 +38,8 @@ import java.io.Serializable;
  * are scheduled. Many <code>Trigger</code>s can point to the same <code>Job</code>,
  * but a single <code>Trigger</code> can only point to one <code>Job</code>.
  * </p>
+ *
+ * JobDetail可以看作Job的属性配置，通过JobBuilder创建。
  * 
  * @see JobBuilder
  * @see Job
