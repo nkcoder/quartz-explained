@@ -160,6 +160,11 @@ import java.util.TimeZone;
  * time moves back or jumps forward.</li>
  * </ul>
  * </p>
+ *
+ * <p>
+ *     基于cron表达式的trigger，可以参考Unix Cron: https://en.wikipedia.org/wiki/Cron .
+ *     或者参考：{@link CronExpression}
+ * </p>
  * 
  * @see CronScheduleBuilder
  * @see TriggerBuilder

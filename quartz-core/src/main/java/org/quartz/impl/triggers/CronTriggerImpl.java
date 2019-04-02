@@ -38,7 +38,10 @@ import org.quartz.TriggerUtils;
  * A concrete <code>{@link Trigger}</code> that is used to fire a <code>{@link org.quartz.JobDetail}</code>
  * at given moments in time, defined with Unix 'cron-like' definitions.
  * </p>
- * 
+ *
+ * <p>
+ *     CronTrigger的实现，构造函数都Deprecated了，建议使用{@link org.quartz.TriggerBuilder}
+ * </p>
  * 
  * @author Sharada Jambula, James House
  * @author Contributions from Mads Henderson
@@ -502,6 +505,12 @@ public class CronTriggerImpl extends AbstractTrigger<CronTrigger> implements Cro
      * if {@link #setCronExpression(String)} is called after this method, the
      * time zone applied by this method will remain in effect, since the 
      * String cron expression does not carry a time zone!
+     *
+     * <p>
+     *     设置timezone：
+     *      - CronExpression中的timezone优先级比当前的timezone高
+     *      - 如果CronExpression没有设置timezone，则设置成当前的timezone
+     * </p>
      */
     public void setTimeZone(TimeZone timeZone) {
         if(cronEx != null) {
@@ -520,6 +529,12 @@ public class CronTriggerImpl extends AbstractTrigger<CronTrigger> implements Cro
      * <p>
      * Note that the date returned is NOT validated against the related
      * org.quartz.Calendar (if any)
+     * </p>
+     *
+     * <p>
+     *     获取指定时间的下一次触发时间：
+     *      - 如果指定时间晚于结束时间，返回null
+     *      - 如果指定时间早于开始时间，将指定时间设置为(开始时间-1秒)
      * </p>
      */
     @Override
@@ -601,6 +616,7 @@ public class CronTriggerImpl extends AbstractTrigger<CronTrigger> implements Cro
      * <li>The instruction will be interpreted as <code>MISFIRE_INSTRUCTION_FIRE_ONCE_NOW</code>
      * </ul>
      * </p>
+     *
      */
     @Override
     public void updateAfterMisfire(org.quartz.Calendar cal) {
@@ -705,6 +721,10 @@ public class CronTriggerImpl extends AbstractTrigger<CronTrigger> implements Cro
      * the trigger (execute the associated <code>Job</code>), in order to
      * give the <code>Trigger</code> a chance to update itself for its next
      * triggering (if any).
+     * </p>
+     *
+     * <p>
+     *     trigger被触发后，更新上一次触发时间和下一次触发时间
      * </p>
      * 
      * @see #executionComplete(JobExecutionContext, JobExecutionException)
