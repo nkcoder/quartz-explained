@@ -445,6 +445,8 @@ public final class CronExpression implements Serializable, Cloneable {
     //
     // Expression Parsing Functions
     //
+    // 这个是解析cron表达式的核心方法
+    //
     ////////////////////////////////////////////////////////////////////////////
 
     protected void buildExpression(String expression) throws ParseException {
@@ -479,6 +481,7 @@ public final class CronExpression implements Serializable, Cloneable {
             StringTokenizer exprsTok = new StringTokenizer(expression, " \t",
                     false);
 
+            // 遍历cron表达式中的每一个token
             while (exprsTok.hasMoreTokens() && exprOn <= YEAR) {
                 String expr = exprsTok.nextToken().trim();
 
@@ -493,7 +496,8 @@ public final class CronExpression implements Serializable, Cloneable {
                 if(exprOn == DAY_OF_WEEK && expr.indexOf('#') != -1 && expr.indexOf('#', expr.indexOf('#') +1) != -1) {
                     throw new ParseException("Support for specifying multiple \"nth\" days is not implemented.", -1);
                 }
-                
+
+                // 将cron表达式中每一个field上的值保存到对应的TreeSet中
                 StringTokenizer vTok = new StringTokenizer(expr, ",");
                 while (vTok.hasMoreTokens()) {
                     String v = vTok.nextToken();
@@ -519,6 +523,7 @@ public final class CronExpression implements Serializable, Cloneable {
             boolean dayOfMSpec = !dom.contains(NO_SPEC);
             boolean dayOfWSpec = !dow.contains(NO_SPEC);
 
+            // daoOfMonth和dayOfWeek不能同时设置，这个判断为什么不使用: if (dayOfMSpec && dayOfWSpec) {}
             if (!dayOfMSpec || dayOfWSpec) {
                 if (!dayOfWSpec || dayOfMSpec) {
                     throw new ParseException(
@@ -533,6 +538,11 @@ public final class CronExpression implements Serializable, Cloneable {
         }
     }
 
+    /**
+     * 保存type对应field上的表达式。
+     * pos参数的值始终为0。
+     * 这个方法太长，而且分支和逻辑较复杂，需要重构
+     */
     protected int storeExpressionVals(int pos, String s, int type)
         throws ParseException {
 
@@ -542,6 +552,8 @@ public final class CronExpression implements Serializable, Cloneable {
             return i;
         }
         char c = s.charAt(i);
+
+        // 这个分支处理字符串，如Month上的Jan，DayOfWeek上的Mon等
         if ((c >= 'A') && (c <= 'Z') && (!s.equals("L")) && (!s.equals("LW")) && (!s.matches("^L-[0-9]*[W]?"))) {
             String sub = s.substring(i, i + 3);
             int sval = -1;
@@ -553,7 +565,7 @@ public final class CronExpression implements Serializable, Cloneable {
                 }
                 if (s.length() > i + 3) {
                     c = s.charAt(i + 3);
-                    if (c == '-') {
+                    if (c == '-') {     // 处理区间范围
                         i += 4;
                         sub = s.substring(i, i + 3);
                         eval = getMonthNumber(sub) + 1;
@@ -579,7 +591,7 @@ public final class CronExpression implements Serializable, Cloneable {
                                     "Invalid Day-of-Week value: '" + sub
                                         + "'", i);
                         }
-                    } else if (c == '#') {
+                    } else if (c == '#') { // 处理nth
                         try {
                             i += 4;
                             nthdayOfWeek = Integer.parseInt(s.substring(i));
@@ -976,11 +988,16 @@ public final class CronExpression implements Serializable, Cloneable {
         return i;
     }
 
+    /**
+     * 将解析后的值（或区间）根据type保存到对应的TreeSet中
+     *
+     */
     protected void addToSet(int val, int end, int incr, int type)
         throws ParseException {
         
         TreeSet<Integer> set = getSet(type);
 
+        // validate的过程可以提取到一个独立的函数
         if (type == SECOND || type == MINUTE) {
             if ((val < 0 || val > 59 || end > 59) && (val != ALL_SPEC_INT)) {
                 throw new ParseException(
