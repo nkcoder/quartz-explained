@@ -36,6 +36,9 @@ import org.quartz.Trigger.CompletedExecutionInstruction;
  * You are required to implement <code>{@link org.quartz.TriggerListener#getName()}</code> 
  * to return the unique name of your <code>TriggerListener</code>.  
  * </p>
+ *
+ * TriggerListener接口的抽象方法，提供接口中方法的默认实现，可以继承该方法，重写感兴趣的方法即可。
+ * 但是{@link org.quartz.TriggerListener#getName()}需要实现，返回listener的唯一方法。
  * 
  * @see org.quartz.TriggerListener
  */

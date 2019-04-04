@@ -21,6 +21,8 @@ package org.quartz;
 /**
  * The interface to be implemented by classes that want to be informed of major
  * <code>{@link Scheduler}</code> events.
+ *
+ * Scheduler的listener接口，建议继承{@link org.quartz.listeners.SchedulerListenerSupport}
  * 
  * @see Scheduler
  * @see JobListener
@@ -61,6 +63,8 @@ public interface SchedulerListener {
      * Called by the <code>{@link Scheduler}</code> when a <code>{@link Trigger}</code>
      * has reached the condition in which it will never fire again.
      * </p>
+     *
+     * trigger终止执行时调用
      */
     void triggerFinalized(Trigger trigger);
 

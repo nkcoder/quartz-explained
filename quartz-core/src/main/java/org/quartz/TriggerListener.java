@@ -24,7 +24,9 @@ import org.quartz.Trigger.CompletedExecutionInstruction;
  * The interface to be implemented by classes that want to be informed when a
  * <code>{@link Trigger}</code> fires. In general, applications that use a
  * <code>Scheduler</code> will not have use for this mechanism.
- * 
+ *
+ * 给trigger添加listener，实现该接口即可，一般建议使用{@link org.quartz.listeners.TriggerListenerSupport}
+ *
  * @see ListenerManager#addTriggerListener(TriggerListener, Matcher)
  * @see Matcher
  * @see Trigger

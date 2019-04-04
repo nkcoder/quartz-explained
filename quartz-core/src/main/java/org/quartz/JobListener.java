@@ -23,6 +23,8 @@ package org.quartz;
  * <code>{@link org.quartz.JobDetail}</code> executes. In general,
  * applications that use a <code>Scheduler</code> will not have use for this
  * mechanism.
+ *
+ * job执行的listener接口，建议继承{@link org.quartz.listeners.JobListenerSupport}
  * 
  * @see ListenerManager#addJobListener(JobListener, Matcher)
  * @see Matcher
@@ -78,7 +80,7 @@ public interface JobListener {
      */
     void jobExecutionVetoed(JobExecutionContext context);
 
-    
+
     /**
      * <p>
      * Called by the <code>{@link Scheduler}</code> after a <code>{@link org.quartz.JobDetail}</code>
