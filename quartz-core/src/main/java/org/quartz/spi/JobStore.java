@@ -48,6 +48,8 @@ import org.quartz.impl.matchers.GroupMatcher;
  * on the combination of their name and group for uniqueness.
  * </p>
  *
+ * JobStore的接口，为Job和Trigger提供存储机制
+ *
  * @see org.quartz.core.QuartzScheduler
  * @see org.quartz.Trigger
  * @see org.quartz.Job

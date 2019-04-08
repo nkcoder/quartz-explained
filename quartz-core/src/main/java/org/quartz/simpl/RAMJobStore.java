@@ -71,6 +71,10 @@ import static org.quartz.impl.matchers.EverythingMatcher.allTriggers;
  * should not be used if true persistence between program shutdowns is
  * required.
  * </p>
+ *
+ * RAMJobStore: 使用RAM作为存储介质，特点：
+ *  - 访问非常快
+ *  - 数据非持久化
  * 
  * @author James House
  * @author Sharada Jambula
@@ -256,6 +260,8 @@ public class RAMJobStore implements JobStore {
      * <p>
      * Store the given <code>{@link org.quartz.Job}</code>.
      * </p>
+     *
+     * 存储job，主要是将job信息存放到两个jobsByKey和jobsByGroup两个map中。
      * 
      * @param newJob
      *          The <code>Job</code> to be stored.
@@ -393,6 +399,11 @@ public class RAMJobStore implements JobStore {
      * Store the given <code>{@link org.quartz.Trigger}</code>.
      * </p>
      *
+     * 存储trigger，除了更新triggersByKey和triggersByGroup，还需要：
+     *  - 检查trigger对应的job是否存在
+     *  - 更新triggersByJob
+     *  - 判断状态，如是否pause、block等，需要更新trigger的状态
+     *
      * @param newTrigger
      *          The <code>Trigger</code> to be stored.
      * @param replaceExisting
@@ -514,6 +525,9 @@ public class RAMJobStore implements JobStore {
 
 
     /**
+     * trigger替换，前提是新旧trigger关联的是同一个job。
+     * 先删除旧的trigger，然后保存新的trigger，并不是原地替换。
+     *
      * @see org.quartz.spi.JobStore#replaceTrigger(TriggerKey triggerKey, OperableTrigger newTrigger)
      */
     public boolean replaceTrigger(TriggerKey triggerKey, OperableTrigger newTrigger) throws JobPersistenceException {
@@ -629,6 +643,8 @@ public class RAMJobStore implements JobStore {
      * <p>
      * Get the current state of the identified <code>{@link Trigger}</code>.
      * </p>
+     *
+     * 查询trigger的状态
      *
      * @see TriggerState#NORMAL
      * @see TriggerState#PAUSED
