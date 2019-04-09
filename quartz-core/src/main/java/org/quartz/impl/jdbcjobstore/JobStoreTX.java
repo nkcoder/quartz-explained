@@ -36,7 +36,13 @@ import org.quartz.spi.SchedulerSignaler;
  * org.quartz.impl.jdbcjobstore.JobStoreCMT}</code>
  * instead.
  * </p>
- * 
+ *
+ * 事务的选择：
+ *  - 如果你不需要将调度命令（如增加和删除 trigger）与其它事务绑定，可以让 Quartz 通过JobStoreTX来管理事务（这
+ *  是最常用的选择）。
+ *  - 如果你需要 Quartz 与其它事务一起工作（比如在 J2EE 应用中），你应该使用JobStoreCMT - 在这种情况下，
+ *  Quartz 会让应用服务器管理事务。
+ *
  * @author <a href="mailto:jeff@binaryfeed.org">Jeffrey Wescott</a>
  * @author James House
  */

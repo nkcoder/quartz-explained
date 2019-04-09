@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
  * Internal in-memory lock handler for providing thread/resource locking in 
  * order to protect resources from being altered by multiple threads at the 
  * same time.
+ *
+ * 基于内存的lock handler，控制并发访问：如果锁被占用，调用wait循环等待。
  * 
  * @author jhouse
  */

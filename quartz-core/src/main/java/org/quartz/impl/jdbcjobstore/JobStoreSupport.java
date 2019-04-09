@@ -635,6 +635,10 @@ public abstract class JobStoreSupport implements JobStore, Constants {
      * Called by the QuartzScheduler before the <code>JobStore</code> is
      * used, in order to give it a chance to initialize.
      * </p>
+     *
+     * JobStore的初始化，由QuartzScheduler调用。
+     * 主要工作是设置lock handler，是否使用数据库的行锁
+     *
      */
     public void initialize(ClassLoadHelper loadHelper,
             SchedulerSignaler signaler) throws SchedulerConfigException {

@@ -47,6 +47,9 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
         return ((trigger instanceof CronTriggerImpl) && !((CronTriggerImpl)trigger).hasAdditionalProperties());
     }
 
+    /**
+     * 执行sql，从CRON_TRIGGERS表中删除对应的trigger
+     */
     public int deleteExtendedTriggerProperties(Connection conn, TriggerKey triggerKey) throws SQLException {
 
         PreparedStatement ps = null;
@@ -62,6 +65,9 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
         }
     }
 
+    /**
+     * 执行sql，将trigger插入到CRON_TRIGGERS表
+     */
     public int insertExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
         CronTrigger cronTrigger = (CronTrigger)trigger;

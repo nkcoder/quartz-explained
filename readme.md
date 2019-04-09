@@ -14,3 +14,4 @@ quartz教程系列博文之前发表在[并发编程网](http://ifeve.com/quartz
 - [quartz教程六：CronTrigger](https://nkcoder.github.io/2019/03/28/quartz-tutorial-6/)
 - [quartz教程七：TriggerListeners与JobListeners](https://nkcoder.github.io/2019/03/29/quartz-tutorial-7/)
 - [quartz教程八：SchedulerListener](https://nkcoder.github.io/2019/03/29/quartz-tutorial-8/)
+- [quartz教程九：Job Stores](https://nkcoder.github.io/2019/04/08/quartz-tutorial-9/)

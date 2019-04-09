@@ -39,6 +39,8 @@ import org.quartz.utils.DBConnectionManager;
  * org.quartz.impl.jdbcjobstore.JobStoreTX}</code>
  * instead.
  * </p>
+ *
+ * JobStoreCMT主要用于应用服务器环境下，quartz会让应用服务器来管理事务。
  * 
  * @author <a href="mailto:jeff@binaryfeed.org">Jeffrey Wescott</a>
  * @author James House

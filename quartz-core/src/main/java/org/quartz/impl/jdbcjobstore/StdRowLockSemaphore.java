@@ -26,6 +26,8 @@ import java.sql.SQLException;
  * Internal database based lock handler for providing thread/resource locking 
  * in order to protect resources from being altered by multiple threads at the 
  * same time.
+ *
+ * 数据库级别的lock handler，主要是保证并发安全性
  * 
  * @author jhouse
  */
