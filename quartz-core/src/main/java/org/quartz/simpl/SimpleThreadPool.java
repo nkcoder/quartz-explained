@@ -17,6 +17,7 @@
 
 package org.quartz.simpl;
 
+import org.quartz.core.QuartzScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.quartz.SchedulerConfigException;
@@ -291,7 +292,7 @@ public class SimpleThreadPool implements ThreadPool {
     }
 
     /**
-     * 创建指定数目的工作线程，放在LinkedList中
+     * 创建指定数目的工作线程，不启动，放在LinkedList中
      *
      * @param createCount 线程数量
      * @return
@@ -340,7 +341,7 @@ public class SimpleThreadPool implements ThreadPool {
      * </p>
      *
      * <p>
-     *     关闭线程池，会等待正在运行的job执行完成
+     *     关闭线程池，会等待正在运行的job执行完成：{@link QuartzScheduler#shutdown()}
      * </p>
      */
     public void shutdown(boolean waitForJobsToComplete) {
@@ -526,6 +527,8 @@ public class SimpleThreadPool implements ThreadPool {
      * <p>
      * A Worker loops, waiting to execute tasks.
      * </p>
+     *
+     * 执行任务的工作线程
      */
     class WorkerThread extends Thread {
 
@@ -599,7 +602,8 @@ public class SimpleThreadPool implements ThreadPool {
         @Override
         public void run() {
             boolean ran = false;
-            
+
+            // run用于标记当前线程是否已经终止
             while (run.get()) {
                 try {
                     synchronized(lock) {

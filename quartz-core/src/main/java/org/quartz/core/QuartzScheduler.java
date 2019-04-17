@@ -233,6 +233,13 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
         getLog().info("Quartz Scheduler v." + getVersion() + " created.");
     }
 
+    /**
+     * 初始化：
+     *  - bind RMI
+     *  - 注册JMX（如果需要）
+     *
+     * @throws SchedulerException
+     */
     public void initialize() throws SchedulerException {
         
         try {
@@ -595,6 +602,8 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
      * <p>
      * The scheduler is not destroyed, and can be re-started at any time.
      * </p>
+     *
+     * scheduler暂停
      */
     public void standby() {
         resources.getJobStore().schedulerPaused();
@@ -667,6 +676,12 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
      * <p>
      * The scheduler cannot be re-started.
      * </p>
+     *
+     * 关闭，与{@link .#standby()}不同的事，scheduler不能再重启使用
+     *  - 暂停调度线程
+     *  - 停止调度线程，是否等待线程执行完毕
+     *  - 关闭线程池
+     *  -
      * 
      * @param waitForJobsToComplete
      *          if <code>true</code> the scheduler will not allow this method

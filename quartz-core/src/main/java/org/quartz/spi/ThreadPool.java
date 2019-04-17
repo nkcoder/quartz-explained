@@ -86,6 +86,10 @@ public interface ThreadPool {
      * <p>The implementation of this method should block until there is at
      * least one available thread.</p>
      *
+     * 返回线程池中当前可用线程的数量，也是`runInThread(Runnable)`可以被调用的次数
+     *
+     * 如果线程池中没有可用线程，该方法会block
+     *
      * @return the number of currently available threads
      */
     int blockForAvailableThreads();

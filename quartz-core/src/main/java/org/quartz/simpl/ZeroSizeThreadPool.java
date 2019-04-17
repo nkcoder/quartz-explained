@@ -36,10 +36,12 @@ import org.quartz.spi.ThreadPool;
  * instance only exists in order to schedule jobs, but which will never execute
  * jobs (e.g. will never have start() called on it).
  * </p>
- * 
- * <p>
- * </p>
- * 
+ *
+ *
+ * 线程池的大小为0，不会伸缩，所以在绝大部分场景下该线程池都是用不到的。
+ *
+ * 唯一可能用到的场景：scheduler只是用于调度job，而不执行job。
+ *
  * @author Wayne Fay
  */
 public class ZeroSizeThreadPool implements ThreadPool {

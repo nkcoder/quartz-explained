@@ -32,6 +32,8 @@ import org.quartz.spi.ThreadPool;
  * Contains all of the resources (<code>JobStore</code>,<code>ThreadPool</code>,
  * etc.) necessary to create a <code>{@link QuartzScheduler}</code> instance.
  * </p>
+ *
+ * 创建QuartzScheduler需要的所有资源（包括JobStore，ThreadPool等）
  * 
  * @see QuartzScheduler
  * 
@@ -134,6 +136,8 @@ public class QuartzSchedulerResources {
      * <p>
      * Set the name for the <code>{@link QuartzScheduler}</code>.
      * </p>
+     *
+     * 设置QuartzScheduler的名称和线程名称（如果没有被设置）
      * 
      * @exception IllegalArgumentException
      *              if name is null or empty.

@@ -40,6 +40,8 @@ import org.slf4j.LoggerFactory;
  * s that are registered with the <code>{@link QuartzScheduler}</code>.
  * </p>
  *
+ * 负责触发Trigger执行的线程
+ *
  * @see QuartzScheduler
  * @see org.quartz.Job
  * @see Trigger
@@ -145,6 +147,8 @@ public class QuartzSchedulerThread extends Thread {
      * <p>
      * Signals the main processing loop to pause at the next possible point.
      * </p>
+     *
+     * scheduler暂停时，会通知调度线程暂停: {@link QuartzScheduler#standby()}
      */
     void togglePause(boolean pause) {
         synchronized (sigLock) {
@@ -162,6 +166,8 @@ public class QuartzSchedulerThread extends Thread {
      * <p>
      * Signals the main processing loop to pause at the next possible point.
      * </p>
+     *
+     * 停止，如果wait为true，表示等待当前任务执行完毕
      */
     void halt(boolean wait) {
         synchronized (sigLock) {
