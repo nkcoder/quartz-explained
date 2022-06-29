@@ -13,7 +13,7 @@
   <name>quartz-core</name>
 
   <properties>
-	 <derby-version>10.8.2.2</derby-version>
+	 <derby-version>10.14.2.0</derby-version>
   </properties>
 
   <dependencies>
